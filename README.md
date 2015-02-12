@@ -27,8 +27,7 @@ services with it:
 services = Garcon::ServiceLocator.new
 
 services.register(:file_server) { MyFileServer.new }
-services.register(:email_server) {
-MyEmailServer.new(configuration_details) }
+services.register(:email_server) { MyEmailServer.new(configuration_details) }
 services.register(:hostname) { "mysite.example.com" }
 ```
 
@@ -85,7 +84,7 @@ end
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/garcon/fork )
+1. Fork it ( https://github.com/rahoulb/garcon/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
