@@ -52,21 +52,14 @@ services with it:
 services = Garcon::ServiceLocator.new
 
 services.register(:file_server) { MyFileServer.new(services) }
-services.register(:email_server) { MyEmailServer.new(services, configuration_details) }
-services.register(:hostname) { "mysite.example.com" }
-services.register(:path_finder) { MyPathFinder.ne(services)  }
+services.register(:path_finder) { MyPathFinder.new(services) }
 ```
 
 Then use this Service Locator to find your related objects, instead of
-having hard-coded constants.  
+having hard-coded constants.  For example, MyFileServer never needs to
+know how the Path Finder is implemented; it just needs to respond to #default.
 
 ```ruby
-class FileStorage < Struct.new(:services)
-  def store_file file
-    services[:file_server].store file
-  end
-end
-
 class MyFileServer < Struct.new(:services)
   def store file
     write file: file, path: services[:path_finder].default
