@@ -2,6 +2,30 @@
 
 Garcon is a simple Service Locator object.  
 
+Why?
+
+Dependencies, that's why.  
+
+Each object in your application has dependencies and related objects.
+
+For a good design, you need to know those dependencies and keep track of
+them.  
+
+For a flexible design it's useful to be able to switch those
+dependencies in and out.  
+
+So instead of hard-coding your dependencies, use a service locator;
+register your services in the locator and tell it to fetch one for you
+when you need it.  
+
+Your dependency map becomes a list of services - :file_server,
+:email_server etc.  
+
+Your implementation can be switched out at a moment's notice without
+affecting anything else.  
+
+You can go home relaxed and have a nice cup of tea.  
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -29,6 +53,7 @@ services = Garcon::ServiceLocator.new
 services.register(:file_server) { MyFileServer.new }
 services.register(:email_server) { MyEmailServer.new(configuration_details) }
 services.register(:hostname) { "mysite.example.com" }
+services.register(:path_finder) { MyPathFinder.new }
 ```
 
 Then use this Service Locator to find your related objects, instead of
@@ -37,9 +62,14 @@ having hard-coded constants.
 ```ruby
 class FileStorage < Struct.new(:services)
   def store_file file
-    services[:file_server].store file, path: DEFAULT_PATH
+    services[:file_server].store file
   end
-  DEFAULT_PATH = '/home/someone/somewhere';
+end
+
+class MyFileServer < Struct.new(:services)
+  def store file
+    write file: file, path: services[:path_finder].default
+  end
 end
 
 file_storage = FileStorage.new(services)
