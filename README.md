@@ -14,7 +14,8 @@ them.
 For a flexible design it's useful to be able to switch those
 dependencies in and out.  
 
-So instead of hard-coding your dependencies, use a service locator;
+So instead of hard-coding your dependencies or injecting them as a long
+trail of constructor parameters, use a service locator;
 register your services in the locator and tell it to fetch one for you
 when you need it.  
 
@@ -50,10 +51,10 @@ services with it:
 ```ruby
 services = Garcon::ServiceLocator.new
 
-services.register(:file_server) { MyFileServer.new }
-services.register(:email_server) { MyEmailServer.new(configuration_details) }
+services.register(:file_server) { MyFileServer.new(services) }
+services.register(:email_server) { MyEmailServer.new(services, configuration_details) }
 services.register(:hostname) { "mysite.example.com" }
-services.register(:path_finder) { MyPathFinder.new }
+services.register(:path_finder) { MyPathFinder.ne(services)  }
 ```
 
 Then use this Service Locator to find your related objects, instead of
@@ -82,7 +83,7 @@ in your application's configuration:
 
 ```ruby
 services = Garcon::ServiceLocator.new
-services.register(:thing_server) { ThingServer.new }
+services.register(:thing_server) { ThingServer.new(services) }
 MyStuff::Application.config.services = services
 ```
 
