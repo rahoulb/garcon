@@ -105,6 +105,13 @@ class MyThingsController < ApplicationController
 end
 ```
 
+Alternatively, the default behaviour is to try to load a class, based
+upon the service name you have passed to it: 
+
+```ruby
+services['String'].class #=> String
+```
+
 
 ## Contributing
 

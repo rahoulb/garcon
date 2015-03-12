@@ -30,4 +30,8 @@ describe Garcon::ServiceLocator do
     subject['dynamic'].must_equal value1
     subject['dynamic'].must_equal value2
   end
+
+  it "retrieves a class dynamically" do
+    subject["String"].must_equal String
+  end
 end

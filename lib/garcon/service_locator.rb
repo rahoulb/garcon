@@ -7,7 +7,8 @@ module Garcon
     end
 
     def [] service_name
-      @services[service_name.to_s].call
+      service = @services[service_name.to_s]
+      service.nil? ? Object.const_get(service_name.to_s) : service.call
     end
 
     def register service_name, &handler
